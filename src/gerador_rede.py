@@ -14,40 +14,57 @@ def valid(i, j, past):
     return 0
   return 1
 
+"""
+Gera um grafo simples (sem laço/multiaresta)
+com sequencia de grau igual a dada
+- Usa Havel-Hakimi para construir um grafo simples 
+- aleatoriza as arestas mantendo o grau 
+"""
+def model_configuration_network(N, grau, nswap_fac=10, max_tries_fac=100, seed=None):
 
-def model_configuration_network(N, grau):
+  G = nx.configuration_model(grau)
 
-  G = nx.Graph()
+  G = nx.Graph(G)
+  G.remove_edges_from(nx.selfloop_edges(G))
 
-  for i in range(N):
-    G.add_node(i)
+  return G 
 
-  edges_add = {}
-  sum = 0
+  """
+  deg_seq = list(int(d) for d in grau)
 
-  for i in grau:
-    sum += i
+  if any(d < 0 for d in grau):
+    print("grau negativo")
+    return -1 
+  
+  N = len(grau)
+
+  if any(d >= N for d in grau):
+    print("Acima de N")
+    return -1 
+  
   #the quantity of stubs has to be even so we can pair the nodes
-  #a quantidade de stubs deve ser par para possibilitar o pareamento
-  if (sum & 1):
+  if (grau.sum()%2):
+    print("Soma impar")
     return -1
+  
+  if not nx.is_graphical(deg_seq, method="eg"):
+    print("Sequência não é gráfica")
+    return -1 
+  
+  G = nx.havel_hakimi_graph(deg_seq)
 
-  while sum != 0:
+  M = G.number_of_edges()
 
-    i = j = 0
-    #talvez seja melhor criar uma lista com todos graus ao invés de fazer assim
-    while (valid(i, j, edges_add) == 0 or grau[i] == 0 or grau[j] == 0):
-      i = random.randint(0, N-1)
-      j = random.randint(0, N-1)
-      grau[i]-=1
-      grau[j]-=1
+  if M == 0: 
+    return G 
+  
+  nswap = int(nswap_fac*M)
+  max_tries = int(max_tries_fac*nswap)
 
-    G.add_edge(i, j)
-    #bidirecional graph
-    edges_add[(i, j)] = edges_add[(j, i)] = 1
-    sum -= 2
+  nx.double_edge_swap(G, nswap=nswap, max_tries=max_tries, seed=seed)
 
   return G
+  """
 
 """
 Para o modelo de Chung-Lu:
