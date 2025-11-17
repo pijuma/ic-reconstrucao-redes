@@ -16,7 +16,7 @@ from metrics import *
 def gerar(alfa, c, N, kmax):
     grau = binomial_neg(alfa, c, N, kmax)
     print("grau calculado")
-    rede = model_configuration_network(N, grau, seed = 42)
+    rede = model_configuration_network(N, grau)
     print("rede gerada")
     grau_nos, knn = knn_k(rede, N)
     return rede, grau_nos, knn 
