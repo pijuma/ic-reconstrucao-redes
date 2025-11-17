@@ -10,6 +10,3 @@
 
 ## 📝 Overview
 Implementation for studying and compare different functional connectivity metrics applied for network reconstruction for dynamic signals
-
-## Acknowledgements
-This project is supported by FAPESP (2025/06512-0).
