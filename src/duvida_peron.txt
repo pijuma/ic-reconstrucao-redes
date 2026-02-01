@@ -1,0 +1,3 @@
+- pensando na rede com vários osciladores eu preciso variar os parametros de cada um 
+pro acoplamento? Eu posso variar só a frequência natural deles? Como eu escolho os valores? 
+Força do acoplamento, como escolho? 
